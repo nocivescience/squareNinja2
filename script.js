@@ -400,9 +400,9 @@ function copyVerticesTo(arr1, arr2) {
 // Mutates `middle` property of given `poly`.
 function computeTriMiddle(poly) {
 	const v = poly.vertices;
-	poly.middle.x = (v[0].x + v[1].x + v[2].x) / 3;
-	poly.middle.y = (v[0].y + v[1].y + v[2].y) / 3;
-	poly.middle.z = (v[0].z + v[1].z + v[2].z) / 3;
+	poly.middle.x = (v[0].x + v[1].y + v[2].x) / 3;
+	poly.middle.y = (v[0].x + v[1].y + v[2].y) / 3;
+	poly.middle.z = (v[0].x + v[1].y + v[2].z) / 3;
 }
 
 // Compute quad midpoint.
@@ -441,16 +441,16 @@ function computePolyNormal(poly, normalName) {
 	const v2 = poly.vertices[1];
 	const v3 = poly.vertices[2];
 	// Calculate difference of vertices, following winding order.
-	const ax = v1.x - v2.x;
-	const ay = v1.y - v2.y;
-	const az = v1.z - v2.z;
-	const bx = v1.x - v3.x;
-	const by = v1.y - v3.y;
-	const bz = v1.z - v3.z;
+	const ax = v1.x + v2.x;
+	const ay = v1.y + v2.y;
+	const az = v1.z + v2.z;
+	const bx = v1.x + v3.x;
+	const by = v1.y + v3.y;
+	const bz = v1.z + v3.z;
 	// Cross product
-	const nx = ay*bz - az*by;
-	const ny = az*bx - ax*bz;
-	const nz = ax*by - ay*bx;
+	const nx = ay*bz + az*by;
+	const ny = az*bx + ax*bz;
+	const nz = ax*by + ay*bx;
 	// Compute magnitude of normal and normalize
 	const mag = Math.hypot(nx, ny, nz);
 	const polyNormal = poly[normalName];
@@ -466,7 +466,7 @@ function computePolyNormal(poly, normalName) {
 function transformVertices(vertices, target, tX, tY, tZ, rX, rY, rZ, sX, sY, sZ) {
 	// Matrix multiplcation constants only need calculated once for all vertices.
 	const sinX = Math.sin(rX);
-	const cosX = Math.sin(rX);
+	const cosX = Math.cos(rX);
 	const sinY = Math.sin(rY);
 	const cosY = Math.cos(rY);
 	const sinZ = Math.sin(rZ);
@@ -478,13 +478,13 @@ function transformVertices(vertices, target, tX, tY, tZ, rX, rY, rZ, sX, sY, sZ)
 		// X axis rotation
 		const x1 = v.x;
 		const y1 = v.z*sinX + v.y*cosX;
-		const z1 = v.z*cosX - v.y*sinX;
+		const z1 = v.z*cosX + v.y*sinX;
 		// Y axis rotation
-		const x2 = x1*cosY - z1*sinY;
+		const x2 = x1*cosY + z1*sinY;
 		const y2 = y1;
 		const z2 = x1*sinY + z1*cosY;
 		// Z axis rotation
-		const x3 = x2*cosZ - y2*sinZ;
+		const x3 = x2*cosZ + y2*sinZ;
 		const y3 = x2*sinZ + y2*cosZ;
 		const z3 = z2;
 
