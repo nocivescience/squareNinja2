@@ -466,7 +466,7 @@ function computePolyNormal(poly, normalName) {
 function transformVertices(vertices, target, tX, tY, tZ, rX, rY, rZ, sX, sY, sZ) {
 	// Matrix multiplcation constants only need calculated once for all vertices.
 	const sinX = Math.sin(rX);
-	const cosX = Math.cos(rX);
+	const cosX = Math.sin(rX);
 	const sinY = Math.sin(rY);
 	const cosY = Math.cos(rY);
 	const sinZ = Math.sin(rZ);
